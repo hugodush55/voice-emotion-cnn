@@ -33,7 +33,8 @@ WINDOW_HOP = SR  # 1 s hop between 3 s windows for long recordings
 
 torch.set_num_threads(max(1, os.cpu_count() // 2))
 ckpt = torch.load(MODEL_PATH, map_location="cpu")
-kwargs = {**ckpt["model_kwargs"], "pretrained": False} if ckpt["arch"] == "resnet18" else {}
+# pretrained weights are already inside the checkpoint, no need to download them again
+kwargs = {**ckpt["model_kwargs"], **({"pretrained": False} if "pretrained" in ckpt["model_kwargs"] else {})}
 model = SERModel(ckpt["arch"], len(ckpt["classes"]), **kwargs)
 model.load_state_dict(ckpt["state_dict"])
 model.eval()
@@ -61,6 +62,16 @@ def spectrogram_png(wav: np.ndarray) -> str:
     buf = io.BytesIO()
     fig.savefig(buf, format="png"); plt.close(fig)
     return base64.b64encode(buf.getvalue()).decode()
+
+
+def warm_up():
+    """The first call compiles librosa's numba code and builds matplotlib's font
+    cache (~25 s on CPU). Pay that at startup instead of on the first visitor."""
+    rng = np.random.default_rng(0)
+    wav = preprocess_waveform(rng.standard_normal(44100).astype(np.float32) * 0.1, 44100)
+    with torch.no_grad():
+        model(windows(wav))
+    spectrogram_png(wav)
 
 
 @app.get("/")
@@ -97,3 +108,6 @@ async def predict(file: UploadFile = File(...)):
         "spectrogram_png": spectrogram_png(wav),
         "model": ckpt["arch"],
     }
+
+
+warm_up()

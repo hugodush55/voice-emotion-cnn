@@ -1,0 +1,12 @@
+# Inference only, CPU wheels (the free Hugging Face Space has no GPU)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.0+cpu
+torchaudio==2.11.0+cpu
+torchvision==0.29.0+cpu
+numpy==2.2.6
+librosa==0.11.0
+soundfile==0.14.0
+matplotlib==3.10.9
+fastapi==0.141.1
+uvicorn==0.53.0
+python-multipart==0.0.32

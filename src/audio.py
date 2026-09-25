@@ -56,23 +56,34 @@ class LogMel(nn.Module):
 
     The per-mel-bin mean/std are buffers: they are fitted on the training
     speakers only (see `fit`) and saved in the model checkpoint with it.
+
+    `panns=True` reproduces the front end CNN14 was pretrained with (512-sample
+    window, 50-8000 Hz Slaney mel filters, dB scale); its filterbank matches the
+    one stored in the PANNs checkpoint to 1e-7.
     """
 
-    def __init__(self):
+    def __init__(self, panns: bool = False):
         super().__init__()
+        self.panns = panns
         self.mel = torchaudio.transforms.MelSpectrogram(
-            sample_rate=SR, n_fft=N_FFT, win_length=WIN_LENGTH, hop_length=HOP_LENGTH,
-            n_mels=N_MELS, f_min=20.0, f_max=SR / 2, power=2.0,
+            sample_rate=SR, n_fft=N_FFT, win_length=N_FFT if panns else WIN_LENGTH, hop_length=HOP_LENGTH,
+            n_mels=N_MELS, f_min=50.0 if panns else 20.0, f_max=SR / 2, power=2.0,
+            norm="slaney" if panns else None, mel_scale="slaney" if panns else "htk",
         )
         self.register_buffer("mean", torch.zeros(1, 1, N_MELS, 1))
         self.register_buffer("std", torch.ones(1, 1, N_MELS, 1))
 
     def log_mel(self, wav: torch.Tensor) -> torch.Tensor:
+        if self.panns:
+            return (10 * torch.log10(self.mel(wav).clamp_min(1e-10))).unsqueeze(1)
         return torch.log(self.mel(wav) + 1e-6).unsqueeze(1)
 
     @torch.no_grad()
     def fit(self, wavs: torch.Tensor, batch_size: int = 256) -> None:
-        """Compute per-bin statistics over a (N, T) tensor of training waveforms."""
+        """Compute per-bin statistics over a (N, T) tensor of training waveforms.
+        No-op for the PANNs front end: CNN14 normalises with its own pretrained bn0."""
+        if self.panns:
+            return
         total, total_sq, count = 0.0, 0.0, 0
         for i in range(0, len(wavs), batch_size):
             m = self.log_mel(wavs[i:i + batch_size].to(self.mean.device))

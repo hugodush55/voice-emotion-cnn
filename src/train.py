@@ -22,10 +22,14 @@ from src.models import SERModel, count_params
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--arch", choices=["scratch", "resnet18"], required=True)
+    p.add_argument("--arch", choices=["scratch", "resnet18", "cnn14"], required=True)
     p.add_argument("--split", choices=["speaker", "random"], default="speaker")
     p.add_argument("--no-pretrained", action="store_true", help="resnet18 with random init (ablation)")
-    p.add_argument("--freeze", action="store_true", help="resnet18: train the head only")
+    p.add_argument("--freeze", action="store_true", help="pretrained models: train the head only")
+    p.add_argument("--upsample", type=int, default=1, help="resnet18: enlarge the spectrogram by this factor")
+    p.add_argument("--width", type=int, default=32, help="scratch: channels of the first block")
+    p.add_argument("--mixup", type=float, default=0.0, help="mixup Beta(a, a) parameter, 0 = off")
+    p.add_argument("--noise", action="store_true", help="add white noise at a random 10-40 dB SNR")
     p.add_argument("--epochs", type=int, default=60)
     p.add_argument("--patience", type=int, default=0,
                    help="early stopping patience in epochs, 0 = off (OneCycle needs the full schedule)")
@@ -41,9 +45,35 @@ def run_name(args):
     if args.name:
         return args.name
     name = args.arch
-    if args.arch == "resnet18":
-        name += "_noimagenet" if args.no_pretrained else "_frozen" if args.freeze else ""
+    if args.arch != "scratch":
+        name += "_nopretrain" if args.no_pretrained else "_frozen" if args.freeze else ""
+    if args.upsample > 1:
+        name += f"_up{args.upsample}"
+    if args.arch == "scratch" and args.width != 32:
+        name += f"_w{args.width}"
+    if args.mixup:
+        name += f"_mixup{args.mixup:g}"
+    if args.noise:
+        name += "_noise"
+    if args.epochs != 60:
+        name += f"_ep{args.epochs}"
     return f"{name}_{args.split}split_s{args.seed}"
+
+
+def augment_waveform(x, y, args, n_classes):
+    """Waveform-level augmentation on the GPU. Returns the batch and soft targets."""
+    target = nn.functional.one_hot(y, n_classes).float()
+    if args.noise:
+        snr_db = torch.empty(len(x), 1, device=x.device).uniform_(10, 40)
+        power = x.pow(2).mean(dim=1, keepdim=True)
+        noisy = x + torch.randn_like(x) * (power / 10 ** (snr_db / 10)).sqrt()
+        x = torch.where(torch.rand(len(x), 1, device=x.device) < 0.5, noisy, x)
+    if args.mixup:
+        lam = float(np.random.beta(args.mixup, args.mixup))
+        perm = torch.randperm(len(x), device=x.device)
+        x = lam * x + (1 - lam) * x[perm]
+        target = lam * target + (1 - lam) * target[perm]
+    return x, target
 
 
 @torch.no_grad()
@@ -95,7 +125,7 @@ def save_figures(history, cm, name, out_dir):
 def main():
     args = parse_args()
     name = run_name(args)
-    lr = args.lr or (1e-3 if args.arch == "scratch" else 1e-3 if args.freeze else 3e-4)
+    lr = args.lr or {"scratch": 1e-3, "resnet18": 1e-3 if args.freeze else 3e-4, "cnn14": 1e-3}[args.arch]
     torch.manual_seed(args.seed); np.random.seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -111,7 +141,10 @@ def main():
 
     train_dl, val_dl, test_dl = loader("train", True), loader("val", False), loader("test", False)
 
-    kwargs = {"pretrained": not args.no_pretrained, "freeze_backbone": args.freeze} if args.arch == "resnet18" else {}
+    kwargs = {"scratch": {"width": args.width},
+              "resnet18": {"pretrained": not args.no_pretrained, "freeze_backbone": args.freeze,
+                           "upsample": args.upsample},
+              "cnn14": {"pretrained": not args.no_pretrained, "freeze_backbone": args.freeze}}[args.arch]
     model = SERModel(args.arch, **kwargs).to(device)
     # normalisation statistics from the training clips only
     model.frontend.fit(torch.stack([torch.from_numpy(fix_length(waves[i])) for i in idx["train"]]))
@@ -130,14 +163,15 @@ def main():
 
     for epoch in range(1, args.epochs + 1):
         model.train()
-        if args.freeze:
-            model.net.backbone.eval()  # keep ImageNet BatchNorm statistics
+        if args.freeze:  # keep the pretrained BatchNorm statistics
+            (model.net.backbone if args.arch == "resnet18" else model.net).eval()
         tot_loss, correct, n = 0.0, 0, 0
         for x, y in train_dl:
             x, y = x.to(device), y.to(device)
+            x, target = augment_waveform(x, y, args, len(EMOTION_NAMES))
             with torch.autocast(device_type=device.type, dtype=torch.bfloat16):
                 logits = model(x)
-                loss = loss_fn(logits.float(), y)
+                loss = loss_fn(logits.float(), target)
             opt.zero_grad(set_to_none=True)
             loss.backward()
             opt.step(); sched.step()
