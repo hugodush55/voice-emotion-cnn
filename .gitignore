@@ -1,0 +1,11 @@
+.venv/
+data/*
+!data/splits.csv
+__pycache__/
+*.pyc
+checkpoints/
+*.pt
+!app/model.pt
+.ipynb_checkpoints/
+logs/
+build/

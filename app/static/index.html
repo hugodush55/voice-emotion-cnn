@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Emotion CNN</title>
+<style>
+  :root {
+    --bg: #f6f5f2; --card: #fff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e4e2dd;
+    --accent: #c2410c; --accent-soft: #fbe9df; --bar: #d6d3cc; --top: #c2410c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #151517; --card: #1f1f22; --ink: #ececef; --muted: #9a9aa2; --line: #2e2e33;
+            --accent: #f0804a; --accent-soft: #3a261c; --bar: #3a3a40; --top: #f0804a; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; padding: 0 16px; }
+  main { max-width: 760px; margin: 0 auto; padding-block: 40px 60px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 28px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin-bottom: 18px; }
+  .rec-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  #rec { width: 72px; height: 72px; border-radius: 50%; border: none; cursor: pointer;
+         background: var(--accent); display: grid; place-items: center; flex: none;
+         box-shadow: 0 0 0 0 var(--accent-soft); transition: box-shadow .1s; }
+  #rec span { width: 24px; height: 24px; background: #fff; border-radius: 50%; transition: border-radius .15s; }
+  #rec.on span { border-radius: 4px; }
+  #rec:disabled { opacity: .5; cursor: default; }
+  .rec-info { flex: 1; min-width: 200px; }
+  #status { font-weight: 600; }
+  .hint { color: var(--muted); font-size: 13px; }
+  #timer { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .upload { margin-top: 14px; font-size: 13px; color: var(--muted); }
+  .upload label { color: var(--accent); cursor: pointer; text-decoration: underline; }
+  audio { width: 100%; margin-top: 14px; }
+  #result[hidden] { display: none; }
+  .pred { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pred .label { font-size: 2rem; font-weight: 700; text-transform: capitalize; color: var(--accent); }
+  .pred .conf { color: var(--muted); }
+  .bars { display: grid; grid-template-columns: 80px 1fr 48px; gap: 8px 12px; align-items: center; }
+  .bars .name { text-transform: capitalize; font-size: 14px; }
+  .bars .track { height: 12px; background: var(--line); border-radius: 6px; overflow: hidden; }
+  .bars .fill { height: 100%; background: var(--bar); border-radius: 6px; transition: width .4s; }
+  .bars .fill.top { background: var(--top); }
+  .bars .pct { font-variant-numeric: tabular-nums; text-align: right; font-size: 13px; color: var(--muted); }
+  h2 { font-size: 1rem; margin: 0 0 10px; }
+  #spec { width: 100%; border-radius: 8px; display: block; }
+  .meta { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  .error { color: #dc2626; }
+  footer { color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>What does your voice sound like?</h1>
+  <p class="sub">Record a short sentence (2–4 s) and a CNN guesses the emotion: anger, disgust, fear, happy, neutral or sad.</p>
+
+  <section class="card">
+    <div class="rec-row">
+      <button id="rec" aria-label="Record"><span></span></button>
+      <div class="rec-info">
+        <div id="status">Press to record</div>
+        <div class="hint">Try acting: say <em>"It's eleven o'clock"</em> angrily, then sadly. Stops automatically after 8 s. <span id="timer"></span></div>
+      </div>
+    </div>
+    <div class="upload">or <label for="file">upload an audio file</label> (wav, flac, ogg)
+      <input id="file" type="file" accept="audio/*" hidden></div>
+    <audio id="player" controls hidden></audio>
+  </section>
+
+  <section id="result" class="card" hidden>
+    <div class="pred"><span class="label" id="label"></span><span class="conf" id="conf"></span></div>
+    <div class="bars" id="bars"></div>
+  </section>
+
+  <section id="spec-card" class="card" hidden>
+    <h2>Log-mel spectrogram (what the CNN sees)</h2>
+    <img id="spec" alt="log-mel spectrogram of the recording">
+    <div class="meta" id="meta"></div>
+  </section>
+
+  <footer>Trained on CREMA-D (91 actors), evaluated on speakers never seen in training. Acted emotions in English; predictions on spontaneous speech are much less reliable.</footer>
+</main>
+
+<script>
+const TARGET_SR = 16000, MAX_SEC = 8;
+const recBtn = document.getElementById("rec"), statusEl = document.getElementById("status"),
+      timerEl = document.getElementById("timer"), player = document.getElementById("player");
+let recorder = null, chunks = [], stream = null, t0 = 0, tick = null, analyser = null, raf = null;
+
+recBtn.onclick = () => (recorder && recorder.state === "recording") ? stop() : start();
+document.getElementById("file").onchange = e => { const f = e.target.files[0]; if (f) handleBlob(f); e.target.value = ""; };
+
+async function start() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia(
+      { audio: { echoCancellation: false, autoGainControl: false, noiseSuppression: true } });
+  } catch (err) {
+    return setStatus("Microphone access refused or unavailable (the page must be served over https).", true);
+  }
+  chunks = [];
+  recorder = new MediaRecorder(stream);
+  recorder.ondataavailable = e => chunks.push(e.data);
+  recorder.onstop = () => { stream.getTracks().forEach(t => t.stop()); handleBlob(new Blob(chunks, { type: recorder.mimeType })); };
+  recorder.start();
+  recBtn.classList.add("on"); setStatus("Recording… press again to stop");
+  t0 = performance.now();
+  tick = setInterval(() => {
+    const s = (performance.now() - t0) / 1000;
+    timerEl.textContent = s.toFixed(1) + " s";
+    if (s >= MAX_SEC) stop();
+  }, 100);
+  meter(stream);
+}
+
+function stop() {
+  clearInterval(tick); cancelAnimationFrame(raf);
+  recBtn.style.boxShadow = ""; recBtn.classList.remove("on");
+  if (recorder && recorder.state === "recording") recorder.stop();
+}
+
+function meter(stream) {  // pulsing ring = input level, so people see the mic works
+  const ctx = new AudioContext(), src = ctx.createMediaStreamSource(stream);
+  analyser = ctx.createAnalyser(); analyser.fftSize = 512; src.connect(analyser);
+  const buf = new Float32Array(analyser.fftSize);
+  const loop = () => {
+    analyser.getFloatTimeDomainData(buf);
+    const rms = Math.sqrt(buf.reduce((a, v) => a + v * v, 0) / buf.length);
+    recBtn.style.boxShadow = `0 0 0 ${Math.min(22, rms * 120).toFixed(1)}px var(--accent-soft)`;
+    raf = requestAnimationFrame(loop);
+  };
+  loop();
+}
+
+async function handleBlob(blob) {
+  player.src = URL.createObjectURL(blob); player.hidden = false;
+  setStatus("Analysing…"); recBtn.disabled = true;
+  try {
+    const wav = await toWav16k(blob);
+    const form = new FormData(); form.append("file", wav, "recording.wav");
+    const res = await fetch("predict", { method: "POST", body: form });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || res.statusText);
+    show(data); setStatus("Done — record again?");
+  } catch (err) {
+    setStatus("Error: " + err.message, true);
+  } finally { recBtn.disabled = false; }
+}
+
+// Decode whatever the browser recorded (webm/opus, mp4…) and re-encode as 16 kHz mono WAV,
+// so the server never needs ffmpeg.
+async function toWav16k(blob) {
+  const ctx = new AudioContext();
+  const decoded = await ctx.decodeAudioData(await blob.arrayBuffer());
+  ctx.close();
+  const off = new OfflineAudioContext(1, Math.ceil(decoded.duration * TARGET_SR), TARGET_SR);
+  const src = off.createBufferSource(); src.buffer = decoded; src.connect(off.destination); src.start();
+  const pcm = (await off.startRendering()).getChannelData(0);
+  const buf = new ArrayBuffer(44 + pcm.length * 2), v = new DataView(buf);
+  const str = (o, s) => [...s].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  str(0, "RIFF"); v.setUint32(4, 36 + pcm.length * 2, true); str(8, "WAVEfmt ");
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, TARGET_SR, true); v.setUint32(28, TARGET_SR * 2, true);
+  v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, "data"); v.setUint32(40, pcm.length * 2, true);
+  pcm.forEach((s, i) => v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, s)) * 0x7fff, true));
+  return new Blob([buf], { type: "audio/wav" });
+}
+
+function show(d) {
+  const entries = Object.entries(d.probabilities);
+  document.getElementById("label").textContent = d.prediction;
+  document.getElementById("conf").textContent = `${(entries[0][1] * 100).toFixed(0)} % confidence`;
+  document.getElementById("bars").innerHTML = entries.map(([k, p], i) =>
+    `<span class="name">${k}</span><div class="track"><div class="fill ${i === 0 ? "top" : ""}" style="width:${(p * 100).toFixed(1)}%"></div></div><span class="pct">${(p * 100).toFixed(1)} %</span>`
+  ).join("");
+  document.getElementById("spec").src = "data:image/png;base64," + d.spectrogram_png;
+  document.getElementById("meta").textContent =
+    `${d.duration.toFixed(2)} s after silence trimming · ${d.n_windows} window${d.n_windows > 1 ? "s" : ""} of 3 s · model: ${d.model}`;
+  document.getElementById("result").hidden = false;
+  document.getElementById("spec-card").hidden = false;
+}
+
+function setStatus(msg, err = false) { statusEl.textContent = msg; statusEl.className = err ? "error" : ""; }
+</script>
+</body>
+</html>
