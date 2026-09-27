@@ -22,14 +22,13 @@ from fastapi.responses import FileResponse
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.audio import CLIP_SAMPLES, HOP_LENGTH, SR, fix_length, preprocess_waveform  # noqa: E402
+from src.audio import HOP_LENGTH, SR, preprocess_waveform, sliding_windows  # noqa: E402
 from src.models import SERModel  # noqa: E402
 
 MODEL_PATH = Path(os.environ.get("MODEL_PATH", ROOT / "app" / "model.pt"))
 if not MODEL_PATH.exists():
     MODEL_PATH = ROOT / "checkpoints" / "scratch_speakersplit_s0.pt"
 MAX_SECONDS = 15
-WINDOW_HOP = SR  # 1 s hop between 3 s windows for long recordings
 
 torch.set_num_threads(max(1, os.cpu_count() // 2))
 ckpt = torch.load(MODEL_PATH, map_location="cpu")
@@ -41,14 +40,6 @@ model.eval()
 CLASSES = ckpt["classes"]
 
 app = FastAPI(title="Speech emotion recognition")
-
-
-def windows(wav: np.ndarray) -> torch.Tensor:
-    """One centred 3 s window for short clips, 3 s windows every 1 s for long ones."""
-    if len(wav) <= CLIP_SAMPLES:
-        return torch.from_numpy(fix_length(wav))[None]
-    starts = range(0, len(wav) - CLIP_SAMPLES + 1, WINDOW_HOP)
-    return torch.from_numpy(np.stack([wav[s:s + CLIP_SAMPLES] for s in starts]))
 
 
 def spectrogram_png(wav: np.ndarray) -> str:
@@ -70,7 +61,7 @@ def warm_up():
     rng = np.random.default_rng(0)
     wav = preprocess_waveform(rng.standard_normal(44100).astype(np.float32) * 0.1, 44100)
     with torch.no_grad():
-        model(windows(wav))
+        model(sliding_windows(wav))
     spectrogram_png(wav)
 
 
@@ -96,7 +87,7 @@ async def predict(file: UploadFile = File(...)):
     if len(wav) < sr * 0.3:
         raise HTTPException(400, "recording too short")
     wav = preprocess_waveform(wav, sr)
-    x = windows(wav)
+    x = sliding_windows(wav)
     with torch.no_grad():
         probs = torch.softmax(model(x), dim=1).mean(0).numpy()
     order = np.argsort(-probs)

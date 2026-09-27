@@ -51,6 +51,15 @@ def fix_length(wav: np.ndarray, random: bool = False, rng: np.random.Generator |
     return out
 
 
+def sliding_windows(wav: np.ndarray, hop: int = SR) -> torch.Tensor:
+    """One centred 3 s window for short clips, 3 s windows every `hop` samples for
+    long ones. Predictions are averaged over windows (used by the app and eval)."""
+    if len(wav) <= CLIP_SAMPLES:
+        return torch.from_numpy(fix_length(wav))[None]
+    starts = range(0, len(wav) - CLIP_SAMPLES + 1, hop)
+    return torch.from_numpy(np.stack([wav[s:s + CLIP_SAMPLES] for s in starts]))
+
+
 class LogMel(nn.Module):
     """Waveform batch (B, T) -> normalised log-mel spectrogram (B, 1, N_MELS, frames).
 
