@@ -11,6 +11,8 @@ from src.dataset import ROOT
 groups = defaultdict(list)
 for f in sorted((ROOT / "reports" / "results").glob("*.json")):
     r = json.loads(f.read_text())
+    if not isinstance(r, dict) or "history" not in r:  # ensembles.json, final.json: not training runs
+        continue
     groups[re.sub(r"(_f\d+)?_s\d+$", "", r["name"])].append(r)  # seeds and CV folds
 
 

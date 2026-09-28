@@ -11,7 +11,7 @@ import gradio as gr
 import numpy as np
 import torch
 
-from app.main import CLASSES, analyse, ckpt, model
+from app.main import CLASSES, MODEL_NAME, analyse, model
 from app.plots import signal_figure, spectrogram_figure
 from src.audio import SR, sliding_windows
 from src.gradcam import grad_cam, supports_gradcam
@@ -60,7 +60,7 @@ def predict(audio):
     signal_img = signal_figure(processed, f0, f0_times, flow, dflow, most_voiced_segment(processed, SR, f0))
 
     info = (f"{len(processed) / SR:.2f} s after silence trimming, {n_windows} window"
-            f"{'s' if n_windows > 1 else ''} of 3 s, model: {ckpt['arch']}")
+            f"{'s' if n_windows > 1 else ''} of 3 s, model: {MODEL_NAME}")
     return probs, spec_img, signal_img, info
 
 

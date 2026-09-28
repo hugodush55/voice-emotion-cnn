@@ -14,16 +14,12 @@ import torch
 from sklearn.metrics import balanced_accuracy_score
 
 from src.audio import fix_length, sliding_windows
-from src.dataset import EMOTION_NAMES, ROOT, load_split, load_waveform_cache
-from src.models import SERModel
+from src.dataset import ROOT, load_split, load_waveform_cache
+from src.models import load_checkpoint
 
 
 def load_model(name, device):
-    ckpt = torch.load(ROOT / "checkpoints" / f"{name}.pt", map_location=device)
-    kwargs = {**ckpt["model_kwargs"], **({"pretrained": False} if "pretrained" in ckpt["model_kwargs"] else {})}
-    model = SERModel(ckpt["arch"], len(EMOTION_NAMES), **kwargs).to(device)
-    model.load_state_dict(ckpt["state_dict"])
-    return model.eval()
+    return load_checkpoint(ROOT / "checkpoints" / f"{name}.pt", device)
 
 
 @torch.no_grad()

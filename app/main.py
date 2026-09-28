@@ -24,21 +24,19 @@ from fastapi.responses import FileResponse
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from src.audio import HOP_LENGTH, SR, preprocess_waveform, sliding_windows  # noqa: E402
-from src.models import SERModel  # noqa: E402
+from src.models import Ensemble, load_checkpoint  # noqa: E402
 
-MODEL_PATH = Path(os.environ.get("MODEL_PATH", ROOT / "app" / "model.pt"))
-if not MODEL_PATH.exists():
-    MODEL_PATH = ROOT / "checkpoints" / "scratch_speakersplit_s0.pt"
+# Every checkpoint in app/models/ is loaded; several are averaged as an ensemble.
+MODEL_DIR = Path(os.environ.get("MODEL_DIR", ROOT / "app" / "models"))
 MAX_SECONDS = 15
 
 torch.set_num_threads(max(1, os.cpu_count() // 2))
-ckpt = torch.load(MODEL_PATH, map_location="cpu")
-# pretrained weights are already inside the checkpoint, no need to download them again
-kwargs = {**ckpt["model_kwargs"], **({"pretrained": False} if "pretrained" in ckpt["model_kwargs"] else {})}
-model = SERModel(ckpt["arch"], len(ckpt["classes"]), **kwargs)
-model.load_state_dict(ckpt["state_dict"])
-model.eval()
-CLASSES = ckpt["classes"]
+members = [load_checkpoint(p) for p in sorted(MODEL_DIR.glob("*.pt"))]
+if not members:
+    raise FileNotFoundError(f"no .pt checkpoint in {MODEL_DIR}")
+model = members[0] if len(members) == 1 else Ensemble(members).eval()
+CLASSES = members[0].classes
+MODEL_NAME = members[0].name if len(members) == 1 else f"ensemble of {len(members)} CNNs"
 
 app = FastAPI(title="Speech emotion recognition")
 
@@ -88,8 +86,7 @@ def index():
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "model": ckpt["arch"], "checkpoint": MODEL_PATH.name,
-            "val_uar": ckpt.get("val_uar"), "classes": CLASSES}
+    return {"status": "ok", "model": MODEL_NAME, "checkpoints": [m.name for m in members], "classes": CLASSES}
 
 
 @app.post("/predict")
@@ -108,7 +105,7 @@ async def predict(file: UploadFile = File(...)):
         "duration": len(wav) / SR,
         "n_windows": n_windows,
         "spectrogram_png": base64.b64encode(spectrogram_png(wav)).decode(),
-        "model": ckpt["arch"],
+        "model": MODEL_NAME,
     }
 
 

@@ -46,3 +46,15 @@ def test_gradcam_map(arch):
     cam, spec, cls = grad_cam(model, torch.randn(1, CLIP_SAMPLES))
     assert cam.shape == spec.shape == (64, 301)
     assert 0 <= cam.min() and cam.max() <= 1 and 0 <= cls < 6
+
+
+def test_ensemble_averages_member_probabilities():
+    from src.models import Ensemble
+    torch.manual_seed(0)
+    members = [SERModel("scratch").eval(), SERModel("dilated").eval()]
+    x = torch.randn(2, CLIP_SAMPLES)
+    with torch.no_grad():
+        expected = torch.stack([torch.softmax(m(x), 1) for m in members]).mean(0)
+        assert torch.allclose(torch.softmax(Ensemble(members).eval()(x), 1), expected, atol=1e-5)
+        cam, _, _ = grad_cam(Ensemble(members).eval(), x[:1])
+    assert cam.shape == (64, 301)

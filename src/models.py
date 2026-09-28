@@ -186,5 +186,31 @@ class SERModel(nn.Module):
         return groups + ([{"params": backbone, "lr": lr * backbone_lr_mult}] if backbone else [])
 
 
+def load_checkpoint(path, device="cpu") -> SERModel:
+    """A trained model from a checkpoint written by src/train.py (eval mode)."""
+    ckpt = torch.load(path, map_location=device)
+    kwargs = dict(ckpt["model_kwargs"])
+    if "pretrained" in kwargs:  # the weights are in the checkpoint, no need to fetch them again
+        kwargs["pretrained"] = False
+    model = SERModel(ckpt["arch"], len(ckpt["classes"]), **kwargs).to(device)
+    model.load_state_dict(ckpt["state_dict"])
+    model.classes, model.name = ckpt["classes"], Path(path).stem
+    return model.eval()
+
+
+class Ensemble(nn.Module):
+    """Averages the members' class probabilities. `forward` returns the log of
+    the averaged probabilities, so softmax(forward(x)) is that average."""
+
+    def __init__(self, members):
+        super().__init__()
+        self.members = nn.ModuleList(members)
+        self.frontend = members[0].frontend  # for display only: each member keeps its own
+
+    def forward(self, wav):
+        probs = torch.stack([torch.softmax(m(wav).float(), dim=1) for m in self.members]).mean(0)
+        return torch.log(probs.clamp_min(1e-12))
+
+
 def count_params(model: nn.Module) -> int:
     return sum(p.numel() for p in model.parameters() if p.requires_grad)

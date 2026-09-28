@@ -1,0 +1,1754 @@
+[
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7477106227106226,
+  "test_uar": 0.7290976058931861
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7457264957264957,
+  "test_uar": 0.7182023406404087
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7457264957264957,
+  "test_uar": 0.7232697677181726
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7457264957264957,
+  "test_uar": 0.7232697677181726
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7452686202686202,
+  "test_uar": 0.7099091071110318
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7448107448107448,
+  "test_uar": 0.7240361195271193
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7448107448107448,
+  "test_uar": 0.7263351749539595
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7445054945054945,
+  "test_uar": 0.7129804550585161
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7442002442002442,
+  "test_uar": 0.7206558545713776
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7440476190476191,
+  "test_uar": 0.721119230083764
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.744047619047619,
+  "test_uar": 0.7321689538406702
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7438949938949939,
+  "test_uar": 0.7192776094576131
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7438949938949939,
+  "test_uar": 0.7246480128319371
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7432844932844933,
+  "test_uar": 0.7151309926929246
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.742979242979243,
+  "test_uar": 0.7347828669874651
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7420634920634921,
+  "test_uar": 0.7375452979266917
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7411477411477412,
+  "test_uar": 0.7135982890750311
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7411477411477412,
+  "test_uar": 0.7125230202578269
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7408424908424909,
+  "test_uar": 0.7182082813521059
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7402319902319902,
+  "test_uar": 0.724030178815422
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.73992673992674,
+  "test_uar": 0.7125170795461296
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7393162393162394,
+  "test_uar": 0.7206558545713776
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7384004884004884,
+  "test_uar": 0.7105269411275471
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7384004884004883,
+  "test_uar": 0.7241846373195507
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7382478632478633,
+  "test_uar": 0.7307907087269054
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7382478632478633,
+  "test_uar": 0.7291035466048833
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.737942612942613,
+  "test_uar": 0.7185053169369691
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7377899877899877,
+  "test_uar": 0.7257292223608388
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7376373626373626,
+  "test_uar": 0.7243390958236796
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7371794871794872,
+  "test_uar": 0.7162122022218261
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7371794871794872,
+  "test_uar": 0.7211132893720666
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7371794871794872,
+  "test_uar": 0.7145131586764094
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7370268620268621,
+  "test_uar": 0.7097546486069032
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7368742368742369,
+  "test_uar": 0.7188201746569239
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7365689865689866,
+  "test_uar": 0.7235786847264302
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7365689865689866,
+  "test_uar": 0.7134438305709022
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7362637362637363,
+  "test_uar": 0.7304877324303453
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7361111111111112,
+  "test_uar": 0.7258836808649676
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.735958485958486,
+  "test_uar": 0.7169785540307729
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7359584859584859,
+  "test_uar": 0.7257292223608388
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7358058608058609,
+  "test_uar": 0.7251054476326265
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7355006105006106,
+  "test_uar": 0.7222004396126657
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7353479853479854,
+  "test_uar": 0.716663696310818
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7351953601953602,
+  "test_uar": 0.7238876017346878
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7350427350427351,
+  "test_uar": 0.710366541911721
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7348901098901099,
+  "test_uar": 0.7337075981702608
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7347374847374848,
+  "test_uar": 0.7108358581358046
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7342796092796092,
+  "test_uar": 0.7194320679617418
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7341269841269842,
+  "test_uar": 0.7186597754410978
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7338217338217339,
+  "test_uar": 0.7240301788154221
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7338217338217339,
+  "test_uar": 0.7189746331610527
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7335164835164836,
+  "test_uar": 0.71375274757916
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7333638583638584,
+  "test_uar": 0.725414364640884
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.732905982905983,
+  "test_uar": 0.7255747638567099
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7327533577533578,
+  "test_uar": 0.7257292223608388
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7327533577533578,
+  "test_uar": 0.7114477514406227
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7327533577533578,
+  "test_uar": 0.716051803006
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7326007326007327,
+  "test_uar": 0.7295669221172697
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7324481074481075,
+  "test_uar": 0.7224974751975287
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7321428571428571,
+  "test_uar": 0.7240361195271193
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7318376068376069,
+  "test_uar": 0.7223489574050971
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7318376068376069,
+  "test_uar": 0.7254262460642785
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7315323565323565,
+  "test_uar": 0.7329412463613142
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7313797313797314,
+  "test_uar": 0.7143705815956752
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7312271062271063,
+  "test_uar": 0.7294124636131408
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7310744810744811,
+  "test_uar": 0.7083764034931385
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7309218559218559,
+  "test_uar": 0.7122200439612666
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7307692307692308,
+  "test_uar": 0.7185112576486663
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7307692307692308,
+  "test_uar": 0.7223489574050972
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7307692307692308,
+  "test_uar": 0.7162122022218261
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7306166056166056,
+  "test_uar": 0.7146735578922355
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7304639804639805,
+  "test_uar": 0.716366660725955
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7304639804639804,
+  "test_uar": 0.7195865264658706
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7303113553113553,
+  "test_uar": 0.7151369334046219
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7303113553113553,
+  "test_uar": 0.7214281470920216
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7303113553113553,
+  "test_uar": 0.7169785540307729
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7301587301587302,
+  "test_uar": 0.705002079249094
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7300061050061051,
+  "test_uar": 0.7135982890750312
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.730006105006105,
+  "test_uar": 0.7123745024653952
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7298534798534799,
+  "test_uar": 0.7208103130755065
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7297008547008547,
+  "test_uar": 0.7180538228479773
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7297008547008547,
+  "test_uar": 0.7205132774906433
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7297008547008547,
+  "test_uar": 0.7209647715796352
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7295482295482296,
+  "test_uar": 0.7274223251945582
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7295482295482296,
+  "test_uar": 0.7163607200142578
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7295482295482295,
+  "test_uar": 0.7205132774906434
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7293956043956045,
+  "test_uar": 0.7307966494386028
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7293956043956044,
+  "test_uar": 0.7188201746569239
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7292429792429793,
+  "test_uar": 0.7232757084298699
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.728937728937729,
+  "test_uar": 0.7195865264658706
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.728937728937729,
+  "test_uar": 0.7232697677181726
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.728937728937729,
+  "test_uar": 0.7189746331610527
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7287851037851037,
+  "test_uar": 0.7327867878571853
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7286324786324787,
+  "test_uar": 0.7261925978732252
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7286324786324787,
+  "test_uar": 0.7134438305709024
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7286324786324786,
+  "test_uar": 0.717596388047288
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7284798534798534,
+  "test_uar": 0.7069981583793737
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7284798534798534,
+  "test_uar": 0.7162122022218264
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7283272283272284,
+  "test_uar": 0.7023941068139963
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7281746031746031,
+  "test_uar": 0.7186657161527951
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7281746031746031,
+  "test_uar": 0.7134438305709024
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7280219780219781,
+  "test_uar": 0.7274104437711637
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7278693528693528,
+  "test_uar": 0.7223548981167943
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7275641025641026,
+  "test_uar": 0.7174359888314621
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7275641025641026,
+  "test_uar": 0.704544644448405
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7275641025641026,
+  "test_uar": 0.7326382700647538
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7274114774114775,
+  "test_uar": 0.7079189686924493
+ },
+ {
+  "models": [
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7272588522588522,
+  "test_uar": 0.7177389651280223
+ },
+ {
+  "models": [
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7272588522588522,
+  "test_uar": 0.716051803006
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7271062271062272,
+  "test_uar": 0.7180478821362799
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7271062271062271,
+  "test_uar": 0.7197409849699995
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7266483516483516,
+  "test_uar": 0.7169785540307728
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7264957264957265,
+  "test_uar": 0.7077645101883205
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7263431013431013,
+  "test_uar": 0.7182023406404087
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7261904761904762,
+  "test_uar": 0.7077704509000179
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7257326007326008,
+  "test_uar": 0.7221944989009684
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7257326007326007,
+  "test_uar": 0.7334046218737004
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7257326007326007,
+  "test_uar": 0.7222004396126657
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7257326007326007,
+  "test_uar": 0.7166755777342125
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7257326007326007,
+  "test_uar": 0.7286461118041941
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7255799755799756,
+  "test_uar": 0.7177449058397195
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7252747252747254,
+  "test_uar": 0.7163607200142575
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7251221001221001,
+  "test_uar": 0.721731123388582
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7249694749694751,
+  "test_uar": 0.7011643794926633
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7246642246642248,
+  "test_uar": 0.7082160042773125
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7246642246642248,
+  "test_uar": 0.7046872215291392
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7246642246642248,
+  "test_uar": 0.7168181548149467
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7246642246642248,
+  "test_uar": 0.7151309926929246
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7245115995115995,
+  "test_uar": 0.7163607200142575
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7243589743589743,
+  "test_uar": 0.7079249094041465
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7240537240537241,
+  "test_uar": 0.7099150478227291
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7239010989010989,
+  "test_uar": 0.7217370641002793
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7234432234432235,
+  "test_uar": 0.7172815303273333
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7232905982905983,
+  "test_uar": 0.7097487078952058
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.722985347985348,
+  "test_uar": 0.7324838115606248
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7226800976800977,
+  "test_uar": 0.7241965187429454
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7225274725274726,
+  "test_uar": 0.708982356086259
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7223748473748474,
+  "test_uar": 0.7234242262223015
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7220695970695971,
+  "test_uar": 0.7288005703083229
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7220695970695971,
+  "test_uar": 0.7109962573516307
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7216117216117217,
+  "test_uar": 0.7275649022752927
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7213064713064713,
+  "test_uar": 0.7244994950395057
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7211538461538461,
+  "test_uar": 0.7136042297867284
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7208485958485958,
+  "test_uar": 0.7251173290560208
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7202380952380952,
+  "test_uar": 0.713140854274342
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.719932844932845,
+  "test_uar": 0.7111507158557595
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7199328449328449,
+  "test_uar": 0.6977781738252243
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7191697191697192,
+  "test_uar": 0.7119111269530091
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.719017094017094,
+  "test_uar": 0.6968573635121488
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.718864468864469,
+  "test_uar": 0.7040812689360184
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7187118437118437,
+  "test_uar": 0.7094516723103427
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7187118437118437,
+  "test_uar": 0.7083764034931385
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7181013431013431,
+  "test_uar": 0.7036238341353295
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7176434676434678,
+  "test_uar": 0.714370581595675
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7173382173382175,
+  "test_uar": 0.6819758807105091
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7171855921855922,
+  "test_uar": 0.7028574823263827
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7161172161172162,
+  "test_uar": 0.7119170676647061
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.715964590964591,
+  "test_uar": 0.6959424939107706
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7153540903540904,
+  "test_uar": 0.7102239648309867
+ },
+ {
+  "models": [
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7152014652014652,
+  "test_uar": 0.6778173825224262
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7150488400488401,
+  "test_uar": 0.6976296560327927
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7147435897435898,
+  "test_uar": 0.6918018178577795
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7145909645909647,
+  "test_uar": 0.6867343907800154
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7145909645909646,
+  "test_uar": 0.6913443830570901
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7142857142857144,
+  "test_uar": 0.7022396483098675
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7142857142857143,
+  "test_uar": 0.7088397790055249
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7130647130647131,
+  "test_uar": 0.6947187073011346
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s1",
+   "scratch_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7124542124542125,
+  "test_uar": 0.7059228895621695
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7116910866910867,
+  "test_uar": 0.7295609814055722
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.7112332112332113,
+  "test_uar": 0.6931860036832412
+ },
+ {
+  "models": [
+   "dilated_w48_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7109279609279607,
+  "test_uar": 0.6905780312481435
+ },
+ {
+  "models": [
+   "scratch_w64_noise_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7106227106227107,
+  "test_uar": 0.6770510307134795
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.7106227106227107,
+  "test_uar": 0.7054713954731776
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1"
+  ],
+  "windows": false,
+  "val_uar": 0.7103174603174605,
+  "test_uar": 0.6858076397552426
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7094017094017095,
+  "test_uar": 0.6858076397552427
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.7087912087912088,
+  "test_uar": 0.709000178221351
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1"
+  ],
+  "windows": true,
+  "val_uar": 0.7078754578754577,
+  "test_uar": 0.7275649022752925
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0",
+   "scratch_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.7074175824175825,
+  "test_uar": 0.6922651933701659
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2"
+  ],
+  "windows": false,
+  "val_uar": 0.6988705738705739,
+  "test_uar": 0.6902691142398859
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.6974969474969476,
+  "test_uar": 0.6851957464504247
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s2"
+  ],
+  "windows": true,
+  "val_uar": 0.696886446886447,
+  "test_uar": 0.6882730351096061
+ },
+ {
+  "models": [
+   "scratch_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.6920024420024421,
+  "test_uar": 0.68811263589378
+ },
+ {
+  "models": [
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": false,
+  "val_uar": 0.691849816849817,
+  "test_uar": 0.7007128854036714
+ },
+ {
+  "models": [
+   "cnn14_ep40_speakersplit_s0"
+  ],
+  "windows": true,
+  "val_uar": 0.6881868131868133,
+  "test_uar": 0.6962632923424227
+ }
+]
