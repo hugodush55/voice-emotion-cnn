@@ -194,7 +194,7 @@ model: it has learnt the acting conventions of these 91 actors, which listeners 
 
 **Gradio** page on a free Hugging Face Space (`gradio_app.py`), running the deployed ensemble
 (`app/models/`: CNN from scratch + dilated CNN + wide CNN; an analysis, figures included, takes 5-10 s on the
-few seconds). Record with the microphone (or upload a file) and get:
+free Space). Record with the microphone (or upload a file) and get:
 
 - the probabilities of the six emotions;
 - **Spectrogram tab**: the log-mel of the 3 s window the CNN classified, and a **Grad-CAM** map
