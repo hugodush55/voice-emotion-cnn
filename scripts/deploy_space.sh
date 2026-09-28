@@ -20,10 +20,12 @@ echo "built $OUT ($(du -sh "$OUT" | cut -f1))"
 [ "${1:-}" = "--build-only" ] && exit 0
 
 export GIT_SSH_COMMAND="ssh -i $SSH_KEY -o IdentitiesOnly=yes"
+export PATH="$HOME/.local/bin:$PATH"  # git-lfs: HF rejects binary files (model.pt) outside LFS
 if [ -d "$REPO/.git" ]; then
   git -C "$REPO" pull -q
 else
   git clone -q "git@hf.co:spaces/$SPACE" "$REPO"
+  git -C "$REPO" lfs install --local
   git -C "$REPO" config user.name "$(git config user.name)"
   git -C "$REPO" config user.email "$(git config user.email)"
 fi

@@ -1,9 +1,9 @@
-# Inference only, CPU wheels (the model needs no GPU). Gradio itself is
-# installed by the Space from sdk_version in README.md.
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.14.0+cpu
-torchaudio==2.11.0+cpu
-torchvision==0.29.0+cpu
+# Inference only. The Space runs on ZeroGPU hardware, which only accepts some
+# torch versions (<= 2.13.0 as of 2026-09); the model itself runs on CPU.
+# Gradio is installed by the Space from sdk_version in README.md.
+torch==2.13.0
+torchaudio==2.11.0
+torchvision==0.28.0
 numpy==2.2.6
 librosa==0.11.0
 soundfile==0.14.0

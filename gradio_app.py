@@ -13,7 +13,15 @@ from PIL import Image
 
 from app.main import analyse, ckpt, spectrogram_png
 
+try:  # Hugging Face ZeroGPU hardware requires at least one @spaces.GPU function
+    import spaces
+    on_zerogpu = spaces.GPU(duration=20)
+except ImportError:  # running locally
+    def on_zerogpu(fn):
+        return fn
 
+
+@on_zerogpu
 def predict(audio):
     if audio is None:
         raise gr.Error("Record or upload some audio first.")
