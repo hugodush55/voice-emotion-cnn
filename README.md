@@ -97,7 +97,7 @@ per-run JSON, learning curves and confusion matrices in `reports/`.
 | ResNet-18 ImageNet, fine-tuned | 3 | 11,179,590 | 68.0 ± 0.1 | 66.7 ± 1.4 | 66.3 ± 1.5 |
 | CNN14 AudioSet, frozen backbone | 1 | 12,294 | 43.3 | 45.2 | 44.5 |
 | CNN14 AudioSet, fine-tuned (40 epochs) | 3 | 79,686,086 | 69.0 ± 0.2 | 69.1 ± 0.8 | 68.4 ± 1.0 |
-| **Ensemble** (scratch + dilated + wide scratch) | - | 6.9 M in total | 74.8 | **72.9 / 73.2** | 73.1 |
+| **Ensemble** (scratch + dilated + wide scratch) | - | 7.2 M in total | 74.8 | **72.9 / 73.2** | 73.2 |
 
 - **From scratch vs transfer.** A 1.2 M-parameter CNN trained from scratch matches or beats
   11 M- and 80 M-parameter pretrained networks. With 5,300 training clips, the domain matters more
@@ -235,7 +235,7 @@ python -m src.dataset                     # waveform cache, speaker split, examp
 python -m src.train --arch scratch        # --arch dilated|resnet18|cnn14, --split random|cv --fold k, --seed s
 python -m src.summarize                   # reports/results/summary.md
 python -m src.evaluate <checkpoint names> # single models and ensembles, val and test UAR
-python -m pytest                          # 21 tests, about 10 s, no dataset needed
+python -m pytest                          # 21 tests, about 10 s (one needs CREMA-D and is skipped without it)
 python gradio_app.py                      # the app on http://localhost:7860
 scripts/deploy_space.sh                   # push the app to the Hugging Face Space
 ```
