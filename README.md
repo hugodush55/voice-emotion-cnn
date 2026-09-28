@@ -192,11 +192,10 @@ model: it has learnt the acting conventions of these 91 actors, which listeners 
 
 ## 5. The app
 
-**Gradio** page on a free Hugging Face Space (`gradio_app.py`), running the deployed ensemble
-(`app/models/`: CNN from scratch + dilated CNN + wide CNN; an analysis, figures included, takes 5-10 s on the
-free Space). Record with the microphone (or upload a file) and get:
+**Gradio** page on a free Hugging Face Space (`gradio_app.py`). Record with the microphone (or upload
+a file), **choose a model** (default: the deployed ensemble) and get:
 
-- the probabilities of the six emotions;
+- the probabilities of the six emotions according to the chosen model;
 - **Spectrogram tab**: the log-mel of the 3 s window the CNN classified, and a **Grad-CAM** map
   (`src/gradcam.py`) showing which time-frequency regions pushed the network towards its answer;
 - **Waveform, pitch and vocal-fold pulses tab**: the waveform with the **F0 contour** (pYIN), and an
@@ -205,7 +204,20 @@ free Space). Record with the microphone (or upload a file) and get:
   leaving the vocal-fold pulses; dotted lines mark the estimated glottal closures. A real
   laryngograph needs neck electrodes; this estimate uses the audio only. On a synthetic vowel with a
   known glottal pulse the estimate correlates at **0.98** with the truth (a sine at the same pitch
-  scores 0.75), and its periodicity is exactly the synthesised 120 Hz (`tests/test_voice_analysis.py`).
+  scores 0.75), and its periodicity is exactly the synthesised 120 Hz (`tests/test_voice_analysis.py`);
+- **Compare models tab**: the answer of all seven models on the same recording, next to their test
+  UAR: the ensemble, its three from-scratch members, CNN14 AudioSet, and ResNet-18 ImageNet
+  fine-tuned and frozen. It makes the results of section 4 visible on your own voice: the frozen
+  ImageNet network is usually the odd one out.
+
+![all models on one recording](reports/figures/app_compare_example.png)
+
+*A sad test clip (actor 1047): six models answer "sad", the frozen ResNet-18 hesitates towards "neutral".*
+
+The models offered are listed in `app/models/registry.json`. Every checkpoint runs once per
+recording (an ensemble reuses its members' outputs); an analysis with all figures takes about
+10 s on the free Space. CNN14 (319 MB) exceeds GitHub's file limit, so it is only on the Space;
+without it the app simply offers the other six models.
 
 A plain **FastAPI** version with its own HTML recording page also exists (`app/main.py`,
 `app/static/index.html`): `POST /predict` returns the probabilities and the spectrogram.
@@ -246,7 +258,7 @@ src/human_baseline.py   how often CREMA-D's listeners recognise the intended emo
 src/gradcam.py          Grad-CAM on the spectrogram
 src/voice_analysis.py   pitch and IAIF glottal-flow estimate
 gradio_app.py           the deployed app
-app/                    FastAPI app, figures for the app, deployed models (app/models/*.pt)
+app/                    FastAPI app, figures for the app, models offered (app/models/registry.json)
 deploy/                 Hugging Face Space configuration
 scripts/                experiment series and deployment
 tests/                  pytest suite

@@ -1,0 +1,17 @@
+[
+ {"name": "Ensemble of 3 CNNs (deployed)", "kind": "from scratch",
+  "checkpoints": ["scratch_speakersplit_s1", "dilated_w48_speakersplit_s1", "scratch_w64_noise_speakersplit_s0"],
+  "test_uar": 0.729, "note": "average of the three from-scratch CNNs below, chosen on validation"},
+ {"name": "CNN from scratch", "kind": "from scratch", "checkpoints": ["scratch_speakersplit_s1"],
+  "test_uar": 0.686, "note": "course design, 4 conv blocks, 1.2 M parameters"},
+ {"name": "Dilated CNN", "kind": "from scratch", "checkpoints": ["dilated_w48_speakersplit_s1"],
+  "test_uar": 0.692, "note": "time dilations 1-32, 1.3 s receptive field, 1.3 M parameters"},
+ {"name": "Wide CNN + noise", "kind": "from scratch", "checkpoints": ["scratch_w64_noise_speakersplit_s0"],
+  "test_uar": 0.678, "note": "course design with 2x the channels, trained with added noise, 4.7 M parameters"},
+ {"name": "CNN14 AudioSet, fine-tuned", "kind": "transfer", "checkpoints": ["cnn14_ep40_speakersplit_s0"],
+  "test_uar": 0.701, "note": "PANNs CNN14 pretrained on 2 M AudioSet clips, 80 M parameters"},
+ {"name": "ResNet-18 ImageNet, fine-tuned", "kind": "transfer", "checkpoints": ["resnet18_speakersplit_s0"],
+  "test_uar": 0.669, "note": "pretrained on photos, all layers fine-tuned, 11 M parameters"},
+ {"name": "ResNet-18 ImageNet, frozen", "kind": "transfer", "checkpoints": ["resnet18_frozen_speakersplit_s0"],
+  "test_uar": 0.397, "note": "pretrained on photos, only the last layer trained"}
+]

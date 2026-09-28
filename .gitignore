@@ -9,3 +9,4 @@ checkpoints/
 .ipynb_checkpoints/
 logs/
 build/
+app/models/cnn14*.pt

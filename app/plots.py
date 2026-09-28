@@ -28,7 +28,10 @@ def spectrogram_figure(spec: np.ndarray, cam: np.ndarray | None, label: str) -> 
     fig, axes = plt.subplots(rows, 1, figsize=(9, 2.6 * rows), sharex=True, squeeze=False)
     extent = [0, spec.shape[1] * HOP_LENGTH / SR, 0, spec.shape[0]]
     axes[0, 0].imshow(spec, origin="lower", aspect="auto", cmap="magma", extent=extent)
-    axes[0, 0].set_title("Log-mel spectrogram: the 3 s window the CNN receives", fontsize=10, loc="left")
+    title = "Log-mel spectrogram: the 3 s window the CNN receives"
+    if cam is None:
+        title += " (Grad-CAM is shown for the from-scratch CNNs and their ensemble)"
+    axes[0, 0].set_title(title, fontsize=10, loc="left")
     if cam is not None:
         axes[1, 0].imshow(spec, origin="lower", aspect="auto", cmap="gray", extent=extent)
         axes[1, 0].imshow(cam, origin="lower", aspect="auto", cmap="inferno", alpha=0.55, extent=extent,
@@ -38,6 +41,32 @@ def spectrogram_figure(spec: np.ndarray, cam: np.ndarray | None, label: str) -> 
     for ax in axes[:, 0]:
         ax.set_ylabel("mel band")
     axes[-1, 0].set_xlabel("time (s)")
+    fig.tight_layout()
+    return _to_image(fig)
+
+
+def comparison_figure(results: dict, info: dict, classes: list, selected: str) -> Image.Image:
+    """One row per model, one column per emotion, cell = probability (%). The
+    row's top emotion is outlined; the model currently selected is marked."""
+    names = list(results)
+    probs = np.array([[results[n][c] for c in classes] for n in names])
+    fig, ax = plt.subplots(figsize=(9, 0.55 * len(names) + 1.6))
+    ax.imshow(probs, cmap="Blues", vmin=0, vmax=1, aspect="auto")
+    for i in range(len(names)):
+        top = int(probs[i].argmax())
+        for j in range(len(classes)):
+            ax.text(j, i, f"{100 * probs[i, j]:.0f}", ha="center", va="center", fontsize=9,
+                    color="white" if probs[i, j] > 0.55 else "#0b0b0b", fontweight="bold" if j == top else None)
+        ax.add_patch(plt.Rectangle((top - 0.5, i - 0.5), 1, 1, fill=False, edgecolor=ACCENT, lw=2))
+    labels = [f"{'> ' if n == selected else ''}{n}  ({100 * info[n]['test_uar']:.0f} %)" for n in names]
+    ax.set_yticks(range(len(names)), labels, fontsize=9)
+    ax.set_xticks(range(len(classes)), classes, fontsize=9)
+    ax.xaxis.tick_top()
+    ax.tick_params(length=0)
+    for s in ax.spines.values():
+        s.set_visible(False)
+    ax.set_title("Probability (%) given by each model; in brackets its test UAR on 13 unseen speakers",
+                 fontsize=10, loc="left", pad=24)
     fig.tight_layout()
     return _to_image(fig)
 
