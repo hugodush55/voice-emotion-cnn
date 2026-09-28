@@ -54,6 +54,28 @@ def speaker_split(df: pd.DataFrame, val_frac: float = 0.15, test_frac: float = 0
     return df
 
 
+def cv_speaker_split(df: pd.DataFrame, fold: int, n_folds: int = 5, val_frac: float = 0.15,
+                     seed: int = 0) -> pd.DataFrame:
+    """Leave-speakers-out cross-validation: the 91 actors are dealt into
+    `n_folds` sex-balanced groups; fold k is the test set, and a sex-balanced
+    `val_frac` of the actors is held out from the remaining folds for model
+    selection. Over the folds, every actor is a test speaker exactly once."""
+    rng = np.random.default_rng(seed)
+    fold_of = {}
+    for _, actors in df.groupby("sex")["actor"]:
+        for i, a in enumerate(rng.permutation(actors.unique())):
+            fold_of[a] = i % n_folds
+    split_of = {a: "test" for a, f in fold_of.items() if f == fold}
+    rest = df[~df.actor.isin(split_of)]
+    for _, actors in rest.groupby("sex")["actor"]:
+        actors = rng.permutation(actors.unique())
+        n_val = round(len(actors) * val_frac)
+        split_of.update({a: "val" if i < n_val else "train" for i, a in enumerate(actors)})
+    df = df.assign(split=df["actor"].map(split_of), fold=df["actor"].map(fold_of))
+    check_speaker_disjoint(df)
+    return df
+
+
 def random_clip_split(df: pd.DataFrame, val_frac: float = 0.15, test_frac: float = 0.15,
                       seed: int = 0) -> pd.DataFrame:
     """The WRONG way (clips shuffled regardless of speaker). Only used for the

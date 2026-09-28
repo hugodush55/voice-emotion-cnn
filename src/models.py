@@ -54,6 +54,32 @@ class ScratchCNN(nn.Module):
         return self.head(x)
 
 
+class DilatedCNN(nn.Module):
+    """Time-dilated CNN (design from the course slides). A 3x3 stem, then six
+    3x3 convolutions dilated along time only (rates 1-2-4-8-16-32). Frequency is
+    halved after every layer (64 -> 1 mel rows) but time is never pooled, so each
+    of the 301 frames keeps 10 ms resolution while its receptive field grows to
+    3 + 2 * (1 + 2 + ... + 32) = 129 frames, about 1.3 s: a whole phrase."""
+
+    def __init__(self, n_classes: int = 6, dropout: float = 0.3, width: int = 32):
+        super().__init__()
+        chans = [width, width, 2 * width, 2 * width, 4 * width, 4 * width, 8 * width]
+        layers = [nn.Conv2d(1, chans[0], 3, padding=1, bias=False), nn.BatchNorm2d(chans[0]),
+                  nn.ReLU(inplace=True), nn.MaxPool2d((2, 1))]
+        for i, d in enumerate([1, 2, 4, 8, 16, 32]):
+            layers += [nn.Conv2d(chans[i], chans[i + 1], 3, padding=(1, d), dilation=(1, d), bias=False),
+                       nn.BatchNorm2d(chans[i + 1]), nn.ReLU(inplace=True)]
+            if i < 5:
+                layers.append(nn.MaxPool2d((2, 1)))  # frequency only
+        self.features = nn.Sequential(*layers)
+        self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(2 * chans[-1], n_classes))
+
+    def forward(self, x):
+        x = self.features(x).mean(dim=2)  # (B, C, T)
+        x = torch.cat([x.mean(dim=2), x.amax(dim=2)], dim=1)
+        return self.head(x)
+
+
 class ResNet18Transfer(nn.Module):
     """ImageNet-pretrained ResNet18. The 1-channel spectrogram is repeated on
     the 3 input channels; the 1000-class layer is replaced by a 6-class head.
@@ -130,7 +156,7 @@ class Cnn14Transfer(nn.Module):
         return self.head(F.dropout(x, self.dropout, self.training))
 
 
-ARCHS = {"scratch": ScratchCNN, "resnet18": ResNet18Transfer, "cnn14": Cnn14Transfer}
+ARCHS = {"scratch": ScratchCNN, "dilated": DilatedCNN, "resnet18": ResNet18Transfer, "cnn14": Cnn14Transfer}
 
 
 class SERModel(nn.Module):

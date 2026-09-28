@@ -11,7 +11,7 @@ from src.dataset import ROOT
 groups = defaultdict(list)
 for f in sorted((ROOT / "reports" / "results").glob("*.json")):
     r = json.loads(f.read_text())
-    groups[re.sub(r"_s\d+$", "", r["name"])].append(r)
+    groups[re.sub(r"(_f\d+)?_s\d+$", "", r["name"])].append(r)  # seeds and CV folds
 
 
 def fmt(values):
@@ -27,7 +27,7 @@ for name, runs in groups.items():
                 f"{np.mean([r['train_seconds'] for r in runs]) / 60:.1f} |")
 
 table = "\n".join([
-    "| run | seeds | trainable params | val UAR % | test acc % | test UAR % | test macro-F1 % | train min |",
+    "| run | runs (seeds/folds) | trainable params | val UAR % | test acc % | test UAR % | test macro-F1 % | train min |",
     "|---|---|---|---|---|---|---|---|",
     *rows,
 ])

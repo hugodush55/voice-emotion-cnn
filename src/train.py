@@ -3,6 +3,7 @@
     python -m src.train --arch scratch
     python -m src.train --arch resnet18
     python -m src.train --arch scratch --split random   # leakage experiment
+    python -m src.train --arch scratch --split cv --fold 0   # leave-speakers-out CV, folds 0-4
 """
 import argparse
 import json
@@ -16,18 +17,21 @@ from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_m
 from torch.utils.data import DataLoader
 
 from src.audio import fix_length
-from src.dataset import EMOTION_NAMES, ROOT, SERDataset, load_split, load_waveform_cache, random_clip_split
+from src.dataset import (EMOTION_NAMES, ROOT, SERDataset, cv_speaker_split, load_split, load_waveform_cache,
+                         random_clip_split)
 from src.models import SERModel, count_params
 
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--arch", choices=["scratch", "resnet18", "cnn14"], required=True)
-    p.add_argument("--split", choices=["speaker", "random"], default="speaker")
+    p.add_argument("--arch", choices=["scratch", "dilated", "resnet18", "cnn14"], required=True)
+    p.add_argument("--split", choices=["speaker", "random", "cv"], default="speaker")
+    p.add_argument("--fold", type=int, default=0, help="--split cv: test fold (0 to --n-folds - 1)")
+    p.add_argument("--n-folds", type=int, default=5)
     p.add_argument("--no-pretrained", action="store_true", help="resnet18 with random init (ablation)")
     p.add_argument("--freeze", action="store_true", help="pretrained models: train the head only")
     p.add_argument("--upsample", type=int, default=1, help="resnet18: enlarge the spectrogram by this factor")
-    p.add_argument("--width", type=int, default=32, help="scratch: channels of the first block")
+    p.add_argument("--width", type=int, default=32, help="scratch/dilated: channels of the first block")
     p.add_argument("--mixup", type=float, default=0.0, help="mixup Beta(a, a) parameter, 0 = off")
     p.add_argument("--noise", action="store_true", help="add white noise at a random 10-40 dB SNR")
     p.add_argument("--epochs", type=int, default=60)
@@ -45,11 +49,11 @@ def run_name(args):
     if args.name:
         return args.name
     name = args.arch
-    if args.arch != "scratch":
+    if args.arch in ("resnet18", "cnn14"):
         name += "_nopretrain" if args.no_pretrained else "_frozen" if args.freeze else ""
     if args.upsample > 1:
         name += f"_up{args.upsample}"
-    if args.arch == "scratch" and args.width != 32:
+    if args.arch in ("scratch", "dilated") and args.width != 32:
         name += f"_w{args.width}"
     if args.mixup:
         name += f"_mixup{args.mixup:g}"
@@ -57,7 +61,8 @@ def run_name(args):
         name += "_noise"
     if args.epochs != 60:
         name += f"_ep{args.epochs}"
-    return f"{name}_{args.split}split_s{args.seed}"
+    split = f"cv{args.n_folds}split_f{args.fold}" if args.split == "cv" else f"{args.split}split"
+    return f"{name}_{split}_s{args.seed}"
 
 
 def augment_waveform(x, y, args, n_classes):
@@ -125,13 +130,15 @@ def save_figures(history, cm, name, out_dir):
 def main():
     args = parse_args()
     name = run_name(args)
-    lr = args.lr or {"scratch": 1e-3, "resnet18": 1e-3 if args.freeze else 3e-4, "cnn14": 1e-3}[args.arch]
+    lr = args.lr or {"scratch": 1e-3, "dilated": 1e-3, "resnet18": 1e-3 if args.freeze else 3e-4, "cnn14": 1e-3}[args.arch]
     torch.manual_seed(args.seed); np.random.seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     df = load_split()
     if args.split == "random":
         df = random_clip_split(df.drop(columns="split"), seed=args.seed)
+    elif args.split == "cv":
+        df = cv_speaker_split(df.drop(columns="split"), args.fold, args.n_folds)
     waves = load_waveform_cache(df)
     idx = {s: df.index[df.split == s].to_numpy() for s in ["train", "val", "test"]}
 
@@ -141,7 +148,7 @@ def main():
 
     train_dl, val_dl, test_dl = loader("train", True), loader("val", False), loader("test", False)
 
-    kwargs = {"scratch": {"width": args.width},
+    kwargs = {"scratch": {"width": args.width}, "dilated": {"width": args.width},
               "resnet18": {"pretrained": not args.no_pretrained, "freeze_backbone": args.freeze,
                            "upsample": args.upsample},
               "cnn14": {"pretrained": not args.no_pretrained, "freeze_backbone": args.freeze}}[args.arch]
@@ -208,7 +215,7 @@ def main():
               "best_epoch": best_epoch, "val_uar": best_uar, "test": test,
               "test_per_class_f1": dict(zip(EMOTION_NAMES, per_class.tolist())),
               "confusion_matrix": cm.tolist(), "train_seconds": time.time() - t0,
-              "test_actors": sorted(df.actor[idx["test"]].unique().tolist()) if args.split == "speaker" else None,
+              "test_actors": sorted(df.actor[idx["test"]].unique().tolist()) if args.split != "random" else None,
               "history": history}
     (out_dir / f"{name}.json").write_text(json.dumps(result, indent=1))
     save_figures(history, cm, name, fig_dir)

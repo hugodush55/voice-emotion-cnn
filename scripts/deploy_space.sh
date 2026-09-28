@@ -13,9 +13,9 @@ REPO=build/space-repo
 
 rm -rf "$OUT" && mkdir -p "$OUT/app/static" "$OUT/src"
 cp deploy/requirements.txt deploy/README.md gradio_app.py "$OUT/"
-cp app/main.py app/model.pt "$OUT/app/"
+cp app/main.py app/plots.py app/model.pt "$OUT/app/"
 cp app/static/index.html "$OUT/app/static/"
-cp src/__init__.py src/audio.py src/models.py "$OUT/src/"
+cp src/__init__.py src/audio.py src/models.py src/gradcam.py src/voice_analysis.py "$OUT/src/"
 echo "built $OUT ($(du -sh "$OUT" | cut -f1))"
 [ "${1:-}" = "--build-only" ] && exit 0
 
