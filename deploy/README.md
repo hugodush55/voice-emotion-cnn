@@ -3,8 +3,10 @@ title: Voice Emotion CNN
 emoji: 🎙️
 colorFrom: yellow
 colorTo: red
-sdk: docker
-app_port: 7860
+sdk: gradio
+sdk_version: 6.28.0
+python_version: "3.10"
+app_file: gradio_app.py
 pinned: false
 short_description: Record your voice, see its spectrogram, get an emotion
 ---
@@ -19,5 +21,5 @@ the reported scores are measured on voices the network never heard during traini
 The emotions in the corpus are acted, in English, so predictions on spontaneous
 speech are much less reliable.
 
-API: `POST /predict` with an audio file (`file` form field) returns the
-probabilities and a base64 PNG of the spectrogram. `GET /health` names the model.
+The free Space goes to sleep after 48 h without visitors: the first visit then
+shows "Starting" for about a minute before the page appears.

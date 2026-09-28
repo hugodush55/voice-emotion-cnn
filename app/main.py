@@ -4,6 +4,7 @@
 
 POST /predict takes an audio file (the page sends 16 kHz mono WAV) and returns
 the emotion probabilities and the log-mel spectrogram the CNN actually saw.
+`analyse` and `spectrogram_png` are also used by the Gradio front end (app.py).
 """
 import base64
 import io
@@ -42,7 +43,7 @@ CLASSES = ckpt["classes"]
 app = FastAPI(title="Speech emotion recognition")
 
 
-def spectrogram_png(wav: np.ndarray) -> str:
+def spectrogram_png(wav: np.ndarray) -> bytes:
     with torch.no_grad():
         m = model.frontend.log_mel(torch.from_numpy(wav)[None])[0, 0].numpy()
     fig, ax = plt.subplots(figsize=(8, 2.8), dpi=110)
@@ -52,7 +53,22 @@ def spectrogram_png(wav: np.ndarray) -> str:
     fig.tight_layout()
     buf = io.BytesIO()
     fig.savefig(buf, format="png"); plt.close(fig)
-    return base64.b64encode(buf.getvalue()).decode()
+    return buf.getvalue()
+
+
+def analyse(wav: np.ndarray, sr: int):
+    """Raw audio -> (probabilities sorted high to low, preprocessed waveform, n windows).
+    Raises ValueError on unusable input."""
+    if len(wav) / sr > MAX_SECONDS:
+        wav = wav[: int(MAX_SECONDS * sr)]
+    if len(wav) < sr * 0.3:
+        raise ValueError("recording too short (less than 0.3 s)")
+    wav = preprocess_waveform(wav, sr)
+    x = sliding_windows(wav)
+    with torch.no_grad():
+        probs = torch.softmax(model(x), dim=1).mean(0).numpy()
+    order = np.argsort(-probs)
+    return {CLASSES[i]: float(probs[i]) for i in order}, wav, len(x)
 
 
 def warm_up():
@@ -82,21 +98,16 @@ async def predict(file: UploadFile = File(...)):
         wav, sr = sf.read(io.BytesIO(await file.read()), dtype="float32")
     except Exception:
         raise HTTPException(400, "could not read audio, send a WAV/FLAC/OGG file")
-    if len(wav) / sr > MAX_SECONDS:
-        wav = wav[: int(MAX_SECONDS * sr)]
-    if len(wav) < sr * 0.3:
-        raise HTTPException(400, "recording too short")
-    wav = preprocess_waveform(wav, sr)
-    x = sliding_windows(wav)
-    with torch.no_grad():
-        probs = torch.softmax(model(x), dim=1).mean(0).numpy()
-    order = np.argsort(-probs)
+    try:
+        probs, wav, n_windows = analyse(wav, sr)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
     return {
-        "prediction": CLASSES[order[0]],
-        "probabilities": {CLASSES[i]: float(probs[i]) for i in order},
+        "prediction": next(iter(probs)),
+        "probabilities": probs,
         "duration": len(wav) / SR,
-        "n_windows": len(x),
-        "spectrogram_png": spectrogram_png(wav),
+        "n_windows": n_windows,
+        "spectrogram_png": base64.b64encode(spectrogram_png(wav)).decode(),
         "model": ckpt["arch"],
     }
 
