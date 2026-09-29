@@ -2,7 +2,8 @@
 
     python -m src.final_report
 
-- the deployed ensemble (app/models/*.pt) on the 13 test speakers: UAR, per-class F1, confusion matrix
+- the deployed ensemble (the first entry of app/models/registry.json) on the 13 test speakers: UAR,
+  per-class F1, confusion matrix, and how confident it is for each emotion
 - the 5-fold leave-speakers-out CV checkpoints: pooled UAR over all 7,442 clips and per-actor UAR,
   so that every one of the 91 actors is scored as an unseen speaker
 """
@@ -44,17 +45,25 @@ def main():
     out = {}
 
     # --- deployed ensemble on the fixed test speakers (sliding windows, as in the app)
-    members = [load_checkpoint(p, device) for p in sorted((ROOT / "app" / "models").glob("*.pt"))]
+    deployed = json.loads((ROOT / "app" / "models" / "registry.json").read_text())[0]
+    members = [load_checkpoint(ROOT / "app" / "models" / f"{c}.pt", device) for c in deployed["checkpoints"]]
     model = Ensemble(members).eval() if len(members) > 1 else members[0]
     test = df.index[df.split == "test"]
     y = df.label[test].to_numpy()
-    pred = predict_proba(model, [waves[i] for i in test], device, windows=True).argmax(1)
+    probs = predict_proba(model, [waves[i] for i in test], device, windows=True)
+    pred = probs.argmax(1)
     cm = confusion_matrix(y, pred)
     out["ensemble"] = {"members": [m.name for m in members], "test_uar": balanced_accuracy_score(y, pred),
                        "test_accuracy": float((y == pred).mean()),
                        "per_class_f1": dict(zip(EMOTION_NAMES, f1_score(y, pred, average=None).round(3).tolist())),
                        "per_class_recall": dict(zip(EMOTION_NAMES, (cm.diagonal() / cm.sum(1)).round(3).tolist())),
-                       "confusion_matrix": cm.tolist()}
+                       "confusion_matrix": cm.tolist(),
+                       # for the clips of each true emotion: mean probability given to the right answer,
+                       # and share of clips where the model's top probability is below 50 %
+                       "per_class_prob_of_true": dict(zip(EMOTION_NAMES, [round(float(probs[y == k, k].mean()), 3)
+                                                                          for k in range(6)])),
+                       "per_class_share_top_below_50": dict(zip(EMOTION_NAMES, [
+                           round(float((probs[y == k].max(1) < 0.5).mean()), 3) for k in range(6)]))}
 
     # --- leave-speakers-out CV: every actor is a test speaker once
     base = df.drop(columns="split")

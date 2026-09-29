@@ -1,8 +1,8 @@
 {
  "ensemble": {
   "members": [
-   "dilated_w48_speakersplit_s1",
    "scratch_speakersplit_s1",
+   "dilated_w48_speakersplit_s1",
    "scratch_w64_noise_speakersplit_s0"
   ],
   "test_uar": 0.7321689538406702,
@@ -72,7 +72,23 @@
     9,
     125
    ]
-  ]
+  ],
+  "per_class_prob_of_true": {
+   "anger": 0.693,
+   "disgust": 0.667,
+   "fear": 0.47,
+   "happy": 0.556,
+   "neutral": 0.58,
+   "sad": 0.548
+  },
+  "per_class_share_top_below_50": {
+   "anger": 0.215,
+   "disgust": 0.188,
+   "fear": 0.265,
+   "happy": 0.238,
+   "neutral": 0.323,
+   "sad": 0.199
+  }
  },
  "cv_scratch": {
   "pooled_uar": 0.6626807626357416,

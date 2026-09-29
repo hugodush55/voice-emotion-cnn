@@ -169,11 +169,33 @@ Deployed ensemble on the 13 test speakers (`python -m src.final_report`):
 |---|---|---|---|---|---|---|
 | recall % | 81.8 | 82.9 | 53.6 | 70.7 | 81.3 | 69.1 |
 | F1 % | 83.9 | 72.6 | 58.8 | 74.2 | 83.4 | 66.3 |
+| mean probability given to the right answer % | 69.3 | 66.7 | 47.0 | 55.6 | 58.0 | 54.8 |
+| clips where the top probability is below 50 % | 21.5 | 18.8 | 26.5 | 23.8 | 32.3 | 19.9 |
 
 Anger, disgust and neutral are recognised best. **Fear is the hardest class, and a quarter of the
 fear clips are taken for sadness**; sadness in turn leaks into disgust and fear, and happiness into
 disgust. A plausible reading is that many actors play fear and sadness with a similarly quiet,
 tense voice. The listeners (section 4.6) also struggle most with sadness, happiness, disgust and fear.
+
+**Comparison with the course results (EmoDB).** The course slides report that, in general, happiness
+is the emotion the models are least certain about. On CREMA-D happiness is indeed among the uncertain
+classes (55.6 % mean probability on the right answer, level with sadness), but **fear is the least
+certain** (47.0 %), and neutral is the class where the model most often hesitates (top probability
+below 50 % for a third of the clips). Three differences between the corpora can explain it:
+
+- **Classes and confusions.** EmoDB has 7 classes (with boredom). There, happiness is typically
+  confused with anger: both are high-arousal, loud, high-pitched voices. In CREMA-D happiness is
+  confused with disgust (13 %) and almost never with anger (4 %): the actors play the emotions
+  differently.
+- **Amount of data.** EmoDB has 10 speakers and about 70 happy clips; one class's score then depends
+  on a handful of actors. CREMA-D has 91 actors and 1,271 happy clips.
+- **Language and acting conventions.** German actors in EmoDB and American actors in CREMA-D do not
+  express the same emotion with the same prosody.
+
+The general reason why happiness is hard *from the voice* is visible in CREMA-D's ratings (section 4.6):
+**listeners recognise happiness on 95.7 % of the silent videos but on only 26.0 % of the audio clips**,
+the largest face-voice gap of all six emotions. Happiness is carried mostly by the smile, and a voice-only
+CNN (70.7 % recall here) has less to go on.
 
 ### 4.6 Human reference
 
@@ -182,9 +204,11 @@ CREMA-D also publishes what its crowd-sourced raters answered. From the voice al
 (49.1 % if ties that include the right answer count; 40.5 % on our 13 test actors),
 `python -m src.human_baseline`:
 
-| | anger | disgust | fear | happy | neutral | sad |
+| majority-vote recall % | anger | disgust | fear | happy | neutral | sad |
 |---|---|---|---|---|---|---|
-| listeners' majority vote, recall % | 60.6 | 27.0 | 32.0 | 26.0 | 95.7 | 16.4 |
+| listeners, **voice only** | 60.6 | 27.0 | 32.0 | 26.0 | 95.7 | 16.4 |
+| viewers, **face only** (silent video) | 65.4 | 63.4 | 51.6 | 95.7 | 91.8 | 33.4 |
+| audio + video | 74.7 | 74.4 | 64.8 | 94.8 | 95.7 | 32.3 |
 
 Listeners fall back on "neutral" whenever an emotion is subtle. The CNN, trained on the intended
 labels, is well above this (68.8 %), but the comparison says as much about the corpus as about the
@@ -254,7 +278,7 @@ src/train.py            training, model selection on validation speakers, test e
 src/evaluate.py         ensembles and sliding-window evaluation of saved checkpoints
 src/summarize.py        results table
 src/final_report.py     final numbers and figures (deployed ensemble, CV per actor)
-src/human_baseline.py   how often CREMA-D's listeners recognise the intended emotion
+src/human_baseline.py   how often CREMA-D's raters recognise the intended emotion (voice, face)
 src/gradcam.py          Grad-CAM on the spectrogram
 src/voice_analysis.py   pitch and IAIF glottal-flow estimate
 gradio_app.py           the deployed app

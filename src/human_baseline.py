@@ -1,6 +1,7 @@
-"""How often do CREMA-D's own listeners recognise the intended emotion from the
-voice alone? Uses the corpus' rating summary (processedResults/summaryTable.csv,
-VoiceVote = majority answer of the audio-only raters for each clip).
+"""How often do CREMA-D's own raters recognise the intended emotion from the
+voice alone, and from the face alone? Uses the corpus' rating summary
+(processedResults/summaryTable.csv: VoiceVote / FaceVote = majority answer of the
+audio-only / video-only raters for each clip).
 
     python -m src.human_baseline
 """
@@ -28,6 +29,13 @@ def main():
         print(f"\n{name}: majority-vote UAR {100 * recall.strict.mean():.1f} % "
               f"({100 * recall.with_ties.mean():.1f} % if ties containing the right answer count)")
         print((100 * recall).round(1).T.to_string())
+
+    # voice vs face: which emotions are carried by the voice, which by the face?
+    modality = pd.DataFrame({m: (votes[f"{m}Vote"] == votes.emotion).groupby(votes.emotion).mean() * 100
+                             for m in ["Voice", "Face", "MultiModal"]}).round(1)
+    modality.index = EMOTION_NAMES
+    print("\nmajority-vote recall % by modality (all actors):")
+    print(modality.T.to_string())
 
 
 if __name__ == "__main__":
